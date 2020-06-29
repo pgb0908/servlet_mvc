@@ -7,17 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnect {
-    String driver = "org.mariadb.jdbc.Driver";
-    Connection con;
-    PreparedStatement pstmt;
-    ResultSet rs;
     
+    private static DBConnect db = new DBConnect();
+    private Connection con = null;
+    
+    String driver = "org.mariadb.jdbc.Driver";
     String jdbcUrl="jdbc:mariadb://localhost:3306/mydb";
     String userId="pgb0908";
     String userPass="123456";
     
-    public DBConnect() {
-
+    
+    private DBConnect() {
+    }
+    
+    public static DBConnect getInstance() {
+        return db;
+    }
+    
+    public Connection getConnection() {
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(jdbcUrl, userId, userPass);
@@ -29,10 +36,16 @@ public class DBConnect {
         } catch (SQLException e) {
             System.out.println("DB 접속 실패"); 
         }
+        
+        return con; 
     }
     
     
+
+    
     /*
-     * public static void main(String[] args) { DBConnect dbcon = new DBConnect(); }
+     * public static void main(String[] args) { DBConnect db = new DBConnect();
+     * db.getConnection(); }
      */
+     
 }
